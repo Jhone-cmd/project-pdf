@@ -15,7 +15,9 @@ import com.jhonecmd.pdf.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Comparator;
 
 @Service
@@ -24,14 +26,15 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    public ByteArrayOutputStream report() throws Exception {
+    public ByteArrayInputStream report() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
-        pdf.setDefaultPageSize(PageSize.A4.rotate());
 
-        Document document = new Document(pdf);
+        PdfDocument pdfDocument = new PdfDocument(new PdfWriter(baos));
+        pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
 
-        Paragraph title = new Paragraph("Student List")
+        Document document = new Document(pdfDocument);
+
+        Paragraph title = new Paragraph("Students List")
                 .setFontSize(28)
                 .setFont(PdfFontFactory.createFont(StandardFonts.COURIER_BOLD))
                 .setTextAlignment(TextAlignment.CENTER);
@@ -48,11 +51,12 @@ public class StudentService {
         table.addHeaderCell("AGE");
         table.addHeaderCell("BIRTHDAY");
         table.addHeaderCell("SCHOOL");
-        table.addHeaderCell("CREATED_AT");
+        table.addHeaderCell("CREATED AT");
 
-
-        studentRepository.findAll().stream()
-                .sorted(Comparator.comparing((StudentEntity student) -> student.getSchool().getName())
+        this.studentRepository.findAll()
+                .stream()
+                .sorted(Comparator
+                        .comparing((StudentEntity s) -> s.getSchool().getName())
                         .thenComparing(StudentEntity::getName))
                 .forEach(student -> {
                     table.addCell(student.getName());
@@ -66,7 +70,7 @@ public class StudentService {
         document.add(table);
         document.close();
 
-        return new ByteArrayOutputStream();
-
+        return new ByteArrayInputStream(baos.toByteArray());
     }
+
 }

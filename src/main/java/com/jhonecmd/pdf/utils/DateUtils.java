@@ -10,11 +10,11 @@ import java.time.format.DateTimeFormatter;
 public final class DateUtils {
 
     public static String format(LocalDate date, String pattern) {
-        return DateTimeFormatter.ofLocalizedPattern(pattern).format(date);
+        return DateTimeFormatter.ofPattern(pattern).format(date);
     }
 
     public static String format(LocalDateTime date, String pattern) {
-        return DateTimeFormatter.ofLocalizedPattern(pattern).format(date);
+        return DateTimeFormatter.ofPattern(pattern).format(date);
     }
 
     public static int age(LocalDate birthday) {
