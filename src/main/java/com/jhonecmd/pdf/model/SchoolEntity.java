@@ -2,12 +2,14 @@ package com.jhonecmd.pdf.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "schools")
 @Data
+@NoArgsConstructor
 public class SchoolEntity {
 
     @Id
@@ -17,6 +19,10 @@ public class SchoolEntity {
 
     @Column(name = "created_At")
     private LocalDateTime createdAt;
+
+    public SchoolEntity(String name) {
+        this.name = name;
+    }
 
     @PrePersist
     private void prePersist() {
