@@ -1,0 +1,27 @@
+package com.jhonecmd.pdf.utils;
+
+import org.springframework.util.ObjectUtils;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+
+public final class DateUtils {
+
+    public static String format(LocalDate date, String pattern) {
+        return DateTimeFormatter.ofLocalizedPattern(pattern).format(date);
+    }
+
+    public static String format(LocalDateTime date, String pattern) {
+        return DateTimeFormatter.ofLocalizedPattern(pattern).format(date);
+    }
+
+    public static int age(LocalDate birthday) {
+        if (!ObjectUtils.isEmpty(birthday)) {
+            return Period.between(birthday, LocalDate.now()).getYears();
+        } else {
+            return 0;
+        }
+    }
+}
