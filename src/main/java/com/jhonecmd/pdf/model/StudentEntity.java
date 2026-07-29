@@ -1,12 +1,14 @@
 package com.jhonecmd.pdf.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "students")
+@Data
 public class StudentEntity {
 
     @Id
