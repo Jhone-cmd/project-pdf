@@ -6,7 +6,6 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.jhonecmd.pdf.model.SchoolEntity;
-import com.jhonecmd.pdf.model.StudentEntity;
 import com.jhonecmd.pdf.repository.SchoolRepository;
 import com.jhonecmd.pdf.repository.StudentRepository;
 import com.jhonecmd.pdf.utils.DateUtils;
