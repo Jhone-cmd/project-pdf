@@ -38,7 +38,7 @@ public class StudentController {
             return ResponseEntity.ok()
                     .headers(headers)
                     .contentType(MediaType.APPLICATION_PDF)
-                    .body(new InputStreamResource(this.studentService.report()));
+                    .body(new InputStreamResource(this.studentService.newReport()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

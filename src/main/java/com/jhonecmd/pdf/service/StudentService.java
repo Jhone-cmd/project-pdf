@@ -12,6 +12,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.jhonecmd.pdf.model.StudentEntity;
 import com.jhonecmd.pdf.repository.StudentRepository;
 import com.jhonecmd.pdf.utils.DateUtils;
+import com.jhonecmd.pdf.utils.ReportUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,39 @@ public class StudentService {
         document.close();
 
         return new ByteArrayInputStream(baos.toByteArray());
+    }
+
+    public ByteArrayInputStream newReport() throws IOException {
+
+        ReportUtils report = ReportUtils.getInstance();
+
+        report.setPageSize(PageSize.A4.rotate());
+        report.addParagraph(new Paragraph("Student List").setFontSize(28)
+                .setFont(PdfFontFactory.createFont(StandardFonts.COURIER_BOLD))
+                .setTextAlignment(TextAlignment.CENTER));
+
+        report.addNewLine();
+
+        report.openTable(6);
+        report.addTableHeader("NAME", "EMAIL", "AGE", "BIRTHDAY", "SCHOOL", "CREATED AT");
+        this.studentRepository.findAll()
+                .stream()
+                .sorted(Comparator
+                        .comparing((StudentEntity s) -> s.getSchool().getName())
+                        .thenComparing(StudentEntity::getName))
+                .forEach(student -> {
+                    report.addTableColumn(student.getName());
+                    report.addTableColumn(student.getEmail());
+                    report.addTableColumn(String.valueOf(DateUtils.age(student.getBirthday())));
+                    report.addTableColumn(DateUtils.format(student.getBirthday(), "dd/MM/yyyy"));
+                    report.addTableColumn(student.getSchool().getName().toUpperCase());
+                    report.addTableColumn(DateUtils.format(student.getCreatedAt(), "dd/MM/yyyy HH:mm"));
+                });
+
+        report.closeTable();
+        report.closeDocument();
+
+        return report.getByteArrayInputStream();
     }
 
 }
