@@ -1,5 +1,8 @@
 package com.jhonecmd.pdf.utils;
 
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -10,6 +13,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public final class ReportUtils {
 
@@ -57,10 +61,15 @@ public final class ReportUtils {
         this.table.addCell(object.toString());
     }
 
-    public void addTableFooter(Object... footers) {
+    public void addTableFooter(Object... footers) throws IOException {
         for(Object footer: footers) {
-            this.table.addFooterCell(footer.toString());
+                       String text = (footer == null) ? "" : footer.toString();
+
+            Paragraph p = new Paragraph(text).setFontSize(13).setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD));
+            this.table.addFooterCell(p);
         }
+
+        this.table.getFooter().setBackgroundColor(ColorConstants.LIGHT_GRAY);
     }
 
     public void closeTable() {

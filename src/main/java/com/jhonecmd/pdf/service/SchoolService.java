@@ -43,7 +43,7 @@ public class SchoolService {
                 .stream()
                 .sorted(Comparator.comparing(SchoolEntity::getName)).map(school -> {
                     int studentsCount = studentRepository.countBySchool(school);
-                    report.addTableColumn(school.getName());
+                    report.addTableColumn(school.getName().toUpperCase());
                     report.addTableColumn(studentsCount);
                     report.addTableColumn(DateUtils.format(school.getCreatedAt(), "dd/MM/yyyy HH:mm"));
 
