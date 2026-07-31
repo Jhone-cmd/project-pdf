@@ -52,7 +52,7 @@ public class SchoolService {
                 .mapToInt(Integer::valueOf)
                 .sum();
 
-        report.addTableFooter(null, 30, null);
+        report.addTableFooter(null, totalStudents, null);
 
         report.closeTable();
         report.closeDocument();
